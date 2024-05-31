@@ -1,4 +1,5 @@
 **TRƯỜNG ĐẠI HỌC FPT (Cơ sở Hoà Lạc)**
+
 *Ngày 31 tháng 05 năm 2024*
 
 Đây là bài tập dự án Assignment cho bộ môn **PRJ301 - Phát triển ứng dụng Java Web**. Dự án được thực hiện bởi 5 thành viên của nhóm 5:
@@ -13,6 +14,7 @@
 GVHD: **Lại Hiền Phương (PhuongLH17)**
 
 **I. Nội dung của bài tập Assignment:**
+
 Xây dựng một ứng dụng Web "Cho thuê sân bóng đá":
 - Khách hàng có thể xem lịch trống của các sân và tạo yêu cầu thuê sân cùng các dụng cụ đi kèm nếu muốn (bóng, găng tay, áo, ...)
 - Khi đến thuê, khách hàng có thể gọi thêm đồ ăn, đồ uống
