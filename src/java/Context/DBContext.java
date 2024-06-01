@@ -22,7 +22,7 @@ public class DBContext {
     }
     
     private final String serverName = "localhost";
-    private final String dbName = "Account";
+    private final String dbName = "FootballRentManagement";
     private final String portNumber = "1433";
     private final String instance = "";
     private final String userID = "sa";
