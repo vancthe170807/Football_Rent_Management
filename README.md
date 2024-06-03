@@ -26,4 +26,4 @@ Xây dựng một ứng dụng Web "Cho thuê sân bóng đá":
   1. IDE dùng để code và thực thi chương trình: Apache Netbeans 17, JDK17, Apache Tomcat 10.1.xx.
   2. Lưu trữ dữ liệu: Microsoft SQL Server 2019, SSMS 19
      
-Writting by chuthevan450
+Writting by chuthevan450 (with branch chuthevan450)
