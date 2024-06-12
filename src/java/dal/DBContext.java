@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Context;
+package dal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,5 +26,5 @@ public class DBContext {
     private final String portNumber = "1433";
     private final String instance = "";
     private final String userID = "sa";
-    private final String password = "Chuv@n1281";
+    private final String password = "Chuv@n1281"; //Chỉnh lại password tk sa trên máy của riêng mình nhé
 }
