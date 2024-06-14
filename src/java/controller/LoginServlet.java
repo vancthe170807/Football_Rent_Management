@@ -20,15 +20,16 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         UserDAO userDAO = new UserDAO();
+        HttpSession session = request.getSession();
         try {
             Account user = userDAO.authenticateUser(phone, password);
             if (user != null) {
-                HttpSession session = request.getSession();
                 session.setAttribute("user", user);
+                session.setAttribute("message", "Login successful!");
                 response.sendRedirect("Home.jsp"); // Redirect to the home page or dashboard
             } else {
-                request.setAttribute("error", "Invalid phone or password");
-                request.getRequestDispatcher("Login.jsp").forward(request, response);
+                session.setAttribute("error", "Invalid phone or password");
+                response.sendRedirect("Login.jsp");
             }
         } catch (Exception e) {
             throw new ServletException("Error during authentication", e);
