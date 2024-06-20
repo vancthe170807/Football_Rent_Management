@@ -3,13 +3,13 @@
 *Ngày 31 tháng 05 năm 2024*
 
 Đây là bài tập dự án Assignment cho bộ môn **PRJ301 - Phát triển ứng dụng Java Web**. Dự án được thực hiện bởi 5 thành viên của nhóm 5:
-|       STT       |      Mã Sinh viên        | Họ và tên Sinh viên     |
-| :------------:|:-------------:|:-----:|
-|    1          |        HE170807      |  Chu Thế Văn    |
-|     2         |        HE173160      |   Vũ Quang Mạnh   |
-|     3         | HE176674             |    Bùi Văn Nguyện  |
-|     4         | HE180458             |    Nguyễn Quang Nghĩa  |
-|     5         | HE182413             |    Nguyễn Khang Linh  |
+|       STT       |      Mã Sinh viên        | Họ và tên Sinh viên     |Branch|
+| :------------:|:-------------:|:-----:|:------:|
+|    1          |        HE170807      |  Chu Thế Văn    |vancthe170807|
+|     2         |        HE173160      |   Vũ Quang Mạnh   |manhvqhe173160|
+|     3         | HE176674             |    Bùi Văn Nguyện  |nguyenbvhe176674|
+|     4         | HE180458             |    Nguyễn Quang Nghĩa  |Nghianguyen|
+|     5         | HE182413             |    Nguyễn Khang Linh  |linhnkhe182413|
 
 GVHD: **Lại Hiền Phương (PhuongLH17)**
 
@@ -25,5 +25,3 @@ Xây dựng một ứng dụng Web "Cho thuê sân bóng đá":
 - Công cụ sử dụng:
   1. IDE dùng để code và thực thi chương trình: Apache Netbeans 17, JDK17, Apache Tomcat 10.1.xx.
   2. Lưu trữ dữ liệu: Microsoft SQL Server 2019, SSMS 19
-     
-Writting by chuthevan450 (with branch chuthevan450)
