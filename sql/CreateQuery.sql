@@ -1,4 +1,25 @@
-﻿-- SQL DATABASE PRJ301
+﻿-- SQL DATABASE PRJ301 - ASSIGNMENT
+
+-- Note: phải bôi đen từng mục 1 rồi mới excute query
+
+-- Lệnh Alter table (dùng để thay đổi cột dữ liệu củ bảng có sẵn: Create, Update dữ liệu, Delete)
+alter table FieldInfo alter column FieldCode varchar(7)
+
+-- Lệnh Xoá bảng
+drop table Orders
+-- Update dữ liệu
+update EquipmentInfo set image = 'image/Equipment/GKGloveNike.jpeg' where EquipmentCode = 'GLO10N'
+
+/*
+Danh sách các bảng:
+	1. Quyền người dùng: RoleUser (Adminstrator - Quản trị viên, Employee - Nhân viên, Customer - Khách hàng)
+	2. Thông tin người dùng: User
+	3. Thông tin sân bóng: FieldInfo
+	4. Thông tin dụng cụ cho thuê: EquipmentInfo
+	5. Thông tin hàng hoá bán hàng (nước, đồ ăn): Product
+	6. Thông tin trạng thái: Status (Pending - Đang chờ, Cancel - Huỷ, Success: Thành công)
+	7. Thông tin Đơn đặt thuê: Orders
+*/
 
 -- I. Tạo Database:
 create database FootballRentManagement
@@ -40,85 +61,90 @@ create database FootballRentManagement
 
 	-- 3. Tạo bảng Thông tin sân bóng
 	create table FieldInfo (
-		FieldCode varchar(6) primary key, -- Mã sân
-		FieldName nvarchar(8), -- Tên sân, ví dụ: Sân 5 1, Sân 7 2, Sân 11 1, ...
-		FieldType int, -- Loại sân, ví dụ: 5, 7, 11
-		RentPrice int, -- Giá thuê sân trong 1 giờ, ví dụ: 200000đ/h, 500000đ/h
-		[image] varchar(255) -- Ảnh chi tiết sân
+		FieldCode varchar(7) primary key, -- Mã sân
+		FieldName nvarchar(8) not null, -- Tên sân, ví dụ: Sân 5 1, Sân 7 2, Sân 11 1, ...
+		FieldType int not null, -- Loại sân, ví dụ: 5, 7, 11
+		RentPrice int not null, -- Giá thuê sân trong 1 giờ, ví dụ: 200000đ/h, 500000đ/h
+		[image] varchar(255), -- Ảnh chi tiết sân
+		[Description] text -- Mô tả chi tiết sân
 	)
+
 		-- 3.1. Nhập dữ liệu về bảng Thông tin sân bóng
 		insert into FieldInfo (FieldCode, FieldName, FieldType, RentPrice, [image]) values
-		('SAN501', N'Sân 5 1', 5, 150000, 'image/501.jpg'),
-		('SAN502', N'Sân 5 2', 5, 150000, 'image/502.jpg'),
-		('SAN503', N'Sân 5 3', 5, 150000, 'image/503.jpg'),
-		('SAN701', N'Sân 7 1', 7, 200000, 'image/701.jpg'),
-		('SAN702', N'Sân 7 2', 7, 200000, 'image/702.jpg'),
-		('SAN111', N'Sân 11', 11, 500000, 'image/111.jpg')
-
+		('SAN501', N'Sân 5 1', 5, 150000, 'image/Field/SAN501.jpg'),
+		('SAN502', N'Sân 5 2', 5, 150000, 'image/Field/SAN502.jpg'),
+		('SAN503', N'Sân 5 3', 5, 150000, 'image/Field/SAN503.jpg'),
+		('SAN701', N'Sân 7 1', 7, 200000, 'image/Field/SAN701.jpg'),
+		('SAN702', N'Sân 7 2', 7, 200000, 'image/Field/SAN702.jpg'),
+		('SAN1101', N'Sân 11', 11, 500000, 'image/Field/SAN111.jpg')
+		select * from EquipmentInfo
 	-- 4. Tạo bảng Thông tin dụng cụ cho thuê
 	create table EquipmentInfo (
 		EquipmentCode varchar(6) primary key, -- Mã dụng cụ
 		EquipmentName nvarchar(50), -- Tên dụng cụ
+		Quantities int not null,
 		RentPrice int, -- Giá thuê dụng cụ trong 1 giờ, ví dụ: 200000đ/h, 500000đ/h
 		[Description] text,
 		[image] varchar(255) -- Ảnh chi tiết sân
 	)
+	select * from Product
 
 		-- 4.1. Nhập dữ liệu Thông tin dụng cụ cho thuê
-		insert into EquipmentInfo (EquipmentCode, EquipmentName, RentPrice, [image]) values
-		('PIT01R', N'Áo Pitch - Đỏ - S', 20000, 'image/Equipment/PITR.jpg'),
-		('PIT02R', N'Áo Pitch - Đỏ - M', 21000, 'image/Equipment/PITR.jpg'),
-		('PIT03R', N'Áo Pitch - Đỏ - L', 22000, 'image/Equipment/PITR.jpg'),
-		('PIT04R', N'Áo Pitch - Đỏ - XL', 23000, 'image/Equipment/PITR.jpg'),
-		('PIT05R', N'Áo Pitch - Đỏ - XXL', 24000, 'image/Equipment/PITR.jpg'),
-		('PIT01G', N'Áo Pitch - Xanh lá - S', 20000, 'image/Equipment/PITG.jpg'),
-		('PIT02G', N'Áo Pitch - Xanh lá - M', 21000, 'image/Equipment/PITG.jpg'),
-		('PIT03G', N'Áo Pitch - Xanh lá - L', 22000, 'image/Equipment/PITG.jpg'),
-		('PIT04G', N'Áo Pitch - Xanh lá - XL', 23000, 'image/Equipment/PITG.jpg'),
-		('PIT05G', N'Áo Pitch - Xanh lá - XXL', 24000, 'image/Equipment/PITG.jpg'),
-		('PIT01Y', N'Áo Pitch - Vàng - S', 20000, 'image/Equipment/PITY.jpg'),
-		('PIT02Y', N'Áo Pitch - Vàng - M', 21000, 'image/Equipment/PITY.jpg'),
-		('PIT03Y', N'Áo Pitch - Vàng - L', 22000, 'image/Equipment/PITY.jpg'),
-		('PIT04Y', N'Áo Pitch - Vàng - XL', 23000, 'image/Equipment/PITY.jpg'),
-		('PIT05Y', N'Áo Pitch - Vàng - XXL', 24000, 'image/Equipment/PITY.jpg'),
-		('BAL04A', N'Quả bóng đá - Adidas - 4', 21000, 'image/Equipment/BallAdidas.jpg'),
-		('BAL05A', N'Quả bóng đá - Adidas - 5', 27000, 'image/Equipment/BallAdidas.jpg'),
-		('BAL04N', N'Quả bóng đá - Nike - 4', 20000, 'image/Equipment/BallNike.jpg'),
-		('BAL05N', N'Quả bóng đá - Nike - 5', 25000, 'image/Equipment/BallNike.jpg'),
-		('BAL04D', N'Quả bóng đá - Động Lực - 4', 17000, 'image/Equipment/BallDongluc.jpg'),
-		('BAL05D', N'Quả bóng đá - Động Lực - 5', 20000, 'image/Equipment/BallDongluc.jpg'),
-		('GLO06A', N'Găng tay thủ môn - Adidas - 6', 20000, 'image/Equipment/GKGloveAdidas.jpg'),
-		('GLO07A', N'Găng tay thủ môn - Adidas - 7', 20000, 'image/Equipment/GKGloveAdidas.jpg'),
-		('GLO08A', N'Găng tay thủ môn - Adidas - 8', 20000, 'image/Equipment/GKGloveAdidas.jpg'),
-		('GLO09A', N'Găng tay thủ môn - Adidas - 9', 20000, 'image/Equipment/GKGloveAdidas.jpg'),
-		('GLO10A', N'Găng tay thủ môn - Adidas - 10', 20000, 'image/Equipment/GKGloveAdidas.jpg'),
-		('GLO06N', N'Găng tay thủ môn - Nike - 6', 20000, 'image/Equipment/GKGloveNike.jpg'),
-		('GLO07N', N'Găng tay thủ môn - Nike - 7', 20000, 'image/Equipment/GKGloveNike.jpg'),
-		('GLO08N', N'Găng tay thủ môn - Nike - 8', 20000, 'image/Equipment/GKGloveNike.jpg'),
-		('GLO09N', N'Găng tay thủ môn - Nike - 9', 20000, 'image/Equipment/GKGloveNike.jpg'),
-		('GLO10N', N'Găng tay thủ môn - Nike - 10', 20000, 'image/Equipment/GKGloveNike.jpg')
+		insert into EquipmentInfo (EquipmentCode, EquipmentName, Quantities RentPrice, [image]) values
+		('PIT01R', N'Áo Pitch - Đỏ - S', 10, 20000, 'image/Equipment/PITR.jpg'),
+		('PIT02R', N'Áo Pitch - Đỏ - M', 10, 21000, 'image/Equipment/PITR.jpg'),
+		('PIT03R', N'Áo Pitch - Đỏ - L', 10, 22000, 'image/Equipment/PITR.jpg'),
+		('PIT04R', N'Áo Pitch - Đỏ - XL', 10, 23000, 'image/Equipment/PITR.jpg'),
+		('PIT05R', N'Áo Pitch - Đỏ - XXL', 10, 24000, 'image/Equipment/PITR.jpg'),
+		('PIT01G', N'Áo Pitch - Xanh lá - S', 10, 20000, 'image/Equipment/PITG.jpg'),
+		('PIT02G', N'Áo Pitch - Xanh lá - M', 10, 21000, 'image/Equipment/PITG.jpg'),
+		('PIT03G', N'Áo Pitch - Xanh lá - L', 10, 22000, 'image/Equipment/PITG.jpg'),
+		('PIT04G', N'Áo Pitch - Xanh lá - XL', 10, 23000, 'image/Equipment/PITG.jpg'),
+		('PIT05G', N'Áo Pitch - Xanh lá - XXL', 10, 24000, 'image/Equipment/PITG.jpg'),
+		('PIT01Y', N'Áo Pitch - Vàng - S', 10, 20000, 'image/Equipment/PITY.jpg'),
+		('PIT02Y', N'Áo Pitch - Vàng - M', 10, 21000, 'image/Equipment/PITY.jpg'),
+		('PIT03Y', N'Áo Pitch - Vàng - L', 10, 22000, 'image/Equipment/PITY.jpg'),
+		('PIT04Y', N'Áo Pitch - Vàng - XL', 10, 23000, 'image/Equipment/PITY.jpg'),
+		('PIT05Y', N'Áo Pitch - Vàng - XXL', 10, 24000, 'image/Equipment/PITY.jpg'),
+		('BAL04A', N'Quả bóng đá - Adidas - 4', 10, 21000, 'image/Equipment/BallAdidas.jpeg'),
+		('BAL05A', N'Quả bóng đá - Adidas - 5', 10, 27000, 'image/Equipment/BallAdidas.jpeg'),
+		('BAL04N', N'Quả bóng đá - Nike - 4', 10, 20000, 'image/Equipment/BallNike.jpg'),
+		('BAL05N', N'Quả bóng đá - Nike - 5', 10, 25000, 'image/Equipment/BallNike.jpg'),
+		('BAL04D', N'Quả bóng đá - Động Lực - 4', 10, 17000, 'image/Equipment/BallDongluc.jpg'),
+		('BAL05D', N'Quả bóng đá - Động Lực - 5', 10, 20000, 'image/Equipment/BallDongluc.jpg'),
+		('GLO06A', N'Găng tay thủ môn - Adidas - 6', 10, 20000, 'image/Equipment/GKGloveAdidas.jpg'),
+		('GLO07A', N'Găng tay thủ môn - Adidas - 7', 10, 20000, 'image/Equipment/GKGloveAdidas.jpg'),
+		('GLO08A', N'Găng tay thủ môn - Adidas - 8', 10, 20000, 'image/Equipment/GKGloveAdidas.jpg'),
+		('GLO09A', N'Găng tay thủ môn - Adidas - 9', 10, 20000, 'image/Equipment/GKGloveAdidas.jpg'),
+		('GLO10A', N'Găng tay thủ môn - Adidas - 10', 10, 20000, 'image/Equipment/GKGloveAdidas.jpg'),
+		('GLO06N', N'Găng tay thủ môn - Nike - 6', 10, 20000, 'image/Equipment/GKGloveNike.jpeg'),
+		('GLO07N', N'Găng tay thủ môn - Nike - 7', 10, 20000, 'image/Equipment/GKGloveNike.jpeg'),
+		('GLO08N', N'Găng tay thủ môn - Nike - 8', 10, 20000, 'image/Equipment/GKGloveNike.jpeg'),
+		('GLO09N', N'Găng tay thủ môn - Nike - 9', 10, 20000, 'image/Equipment/GKGloveNike.jpeg'),
+		('GLO10N', N'Găng tay thủ môn - Nike - 10', 10, 20000, 'image/Equipment/GKGloveNike.jpeg')
 
 	-- 5. Tạo bảng thông tin Sản phẩm bán (đồ ăn, thức uống)
 	create table Product (
 		ProductCode varchar(10) primary key, -- Mã sản phẩm
 		ProductName nvarchar(30), -- Tên sản phẩm
+		Quantities int not null,
 		ProductPrice int, -- Đơn giá sản phẩm
 		[image] varchar(255) -- Ảnh chi tiết sản phẩm
 	)
 
 		-- 5.1. Nhập dữ liệu thông tin Sản phẩm:
-		insert into Product (ProductCode, ProductName, ProductPrice, image) values
-		('SNACK00001', N'Snack Oishi Tôm vị Cay 45g', 6000, '/image/Product/OishiTomCay45g.jpg'),
-		('SNACK00002', N'Snack Oishi Tôm vị Cay ĐB 45g', 6000, '/image/Product/OishiTomCayDB45g.jpg'),
-		('SNACK00003', N'Snack Oishi Hành 45g', 6000, '/image/Product/OishiTHanh45g.jpg'),
-		('SNACK00004', N'Snack KT O''Star muối 32g', 6000, '/image/Product/KhoaiTayOStarMuoi32g.jpg'),
-		('SNACK00005', N'Snack KT O''Star Rong biển 32g', 6000, '/image/Product/KhoaiTayOStarRongBien32g.jpg'),
-		('DRINK00001', N'Nước khoáng Aquafina 500ml', 6000, '/image/Product/Aquafina.jpg'),
-		('DRINK00002', N'Nước tăng lực Sting NS 330ml', 10000, '/image/Product/StingNhanSam.jpg'),
-		('DRINK00003', N'Nước tăng lực Sting Dâu 330ml', 6000, '/image/Product/StingDau.jpg'),
-		('DRINK00004', N'Coca-Cola Nguyên bản 330ml Lon', 6000, '/image/Product/Cocacola330mllon.jpg'),
-		('DRINK00005', N'Sport Drink Aquarius', 6000, '/image/Product/AquariusThuong.jpg'),
-		('DRINK00006', N'Sport Drink Aquarius 0 Calo', 6000, '/image/Product/Aquarius0Calories.jpg')
+		insert into Product (ProductCode, ProductName, Quantities, ProductPrice, image) values
+		('SNACK00001', N'Snack Oishi Tôm vị Cay 45g', 100, 6000, 'image/Product/OishiTomCay45g.jpeg'),
+		('SNACK00002', N'Snack Oishi Tôm vị Cay ĐB 45g', 100, 6000, 'image/Product/OishiTomCayDB45g.jpeg'),
+		('SNACK00003', N'Snack Oishi Hành 45g', 100, 6000, 'image/Product/OishiTHanh45g.png'),
+		('SNACK00004', N'Snack KT O''Star muối 32g', 100, 6000, 'image/Product/KhoaiTayOStarMuoi32g.jpg'),
+		('SNACK00005', N'Snack KT O''Star Rong biển 32g', 100, 6000, 'image/Product/KhoaiTayOStarRongBien32g.jpeg'),
+		('DRINK00001', N'Nước khoáng Aquafina 500ml', 100, 6000, 'image/Product/Aquafina.jpg'),
+		('DRINK00002', N'Nước tăng lực Sting NS 330ml', 100, 10000, 'image/Product/StingNhanSam.jpg'),
+		('DRINK00003', N'Nước tăng lực Sting Dâu 330ml', 100, 10000, 'image/Product/StingDau.jpg'),
+		('DRINK00004', N'Coca-Cola Nguyên bản 330ml Lon', 100, 10000, 'image/Product/Cocacola330mllon.png'),
+		('DRINK00005', N'Sport Drink Aquarius', 100, 12000, 'image/Product/AquariusThuong.jpeg'),
+		('DRINK00006', N'Sport Drink Aquarius 0 Calo', 100, 12000, 'image/Product/Aquarius0Calories.jpeg')
 
 	-- 6. Tạo bảng thông tin trạng thái đặt thuê sân, dụng cụ
 	create table [Status] (
@@ -128,27 +154,19 @@ create database FootballRentManagement
 		-- 6.1. Nhập dữ liệu thông tin trạng thái đặt thuê sân, dụng cụ
 		insert into [Status] ([Status]) values ('Pending'), ('Cancel'), ('Success')
 
-	-- 7. Tạo bảng thông tin Order
+	-- 7. Tạo bảng thông tin Order (trong đó Sân là FK và bắt buộc phải có)
 	CREATE TABLE Orders (
-		InvoiceID INT IDENTITY(1,1) PRIMARY KEY, -- Mã hoá đơn
-		phone VARCHAR(15) NOT NULL references [User](phone), -- Số điện thoại người order
+		OrderID INT IDENTITY(1,1) PRIMARY KEY, -- Mã hoá đơn
+		CustomerPhone VARCHAR(15) NOT NULL references [User](phone), -- Số điện thoại khách hàng order
+		FieldCode varchar(7) not null references FieldInfo(FieldCode), -- Mã sân đặt
 		BookingDate DATETIME NOT NULL, -- Ngày đặt
-		TotalCost DECIMAL(10, 2) NOT NULL, -- Tổng giá tiền
+		StartTime datetime not null, --Thời gian bắt đầu đặt sân
+		EndTime datetime not null, -- Thời gian kết thúc đặt sân
 		[Status] VARCHAR(7) NOT NULL DEFAULT 'Pending' references [Status]([Status]) -- Trạng thái đặt đơn
 	);
 
-	-- 8. Tạo bảng thông tin đặt thuê sân
-	create table FieldBookingRent (
-		FieldRentID INT IDENTITY(1,1) PRIMARY KEY, -- Mã thuê sân
-		InvoiceID int references Orders(InvoiceID), -- Mã hoá đơn (quan hệ với Order)
-		FieldCode varchar(6) references FieldInfo(FieldCode), -- Mã sân
-		StartTime datetime not null, -- Giờ bắt đầu thuê
-		EndTime datetime not null, -- Giờ kết thúc
-		FieldCost int -- Phí thuê sân: FieldCost = RentPrice * (EndTime - StartTime)
-	)
-
-	-- 9. Tạo bảng thông tin đặt thuê dụng cụ
-	create table EquipmentBookingRent (
+	-- 8. Tạo bảng thông tin đặt thuê dụng cụ
+	create table EquipmentBooking (
 		EquipmentRentID int primary key, -- Mã thuê dụng cụ
 		InvoiceID int references Orders(InvoiceID), -- Mã hoá đơn liên kết
 		StartTime datetime not null, -- Giờ bắt đầu thuê

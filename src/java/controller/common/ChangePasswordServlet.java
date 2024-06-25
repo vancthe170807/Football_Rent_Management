@@ -1,4 +1,4 @@
-package controller;
+package controller.common;
 
 import dal.UserDAO;
 import model.Account;
@@ -55,6 +55,6 @@ public class ChangePasswordServlet extends HttpServlet {
             Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
             session.setAttribute("error", "An error occurred during authentication!");
         }
-        response.sendRedirect("userinfoservlet");
+        response.sendRedirect("userinfo");
     }
 }

@@ -56,7 +56,7 @@
                 </table>
             </div>
         </div>
-        <a href="Home.jsp" class="btn btn-secondary mt-3">Back to Home</a>
+        <a href="home" class="btn btn-secondary mt-3">Back to Home</a>
     </div>
 
     <!-- Change Password Modal -->

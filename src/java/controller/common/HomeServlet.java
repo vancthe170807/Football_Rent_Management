@@ -1,7 +1,6 @@
-package controller;
+package controller.common;
 
-import dal.UserDAO;
-import model.Account;
+import dal.FieldDAO;
 import java.io.IOException;
 import java.util.List;
 import jakarta.servlet.ServletException;
@@ -10,9 +9,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Field;
 
-@WebServlet(name = "UserListServlet", urlPatterns = {"/userlistservlet"})
-public class UserListServlet extends HttpServlet {
+@WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
+public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -25,17 +25,17 @@ public class UserListServlet extends HttpServlet {
 
         try {
             String searchKeyword = request.getParameter("search");
-            UserDAO userDAO = new UserDAO();
-            List<Account> userList;
+            FieldDAO fieldDAO = new FieldDAO();
+            List<Field> fieldList;
 
             if (searchKeyword != null && !searchKeyword.isEmpty()) {
-                userList = userDAO.searchUsers(searchKeyword);
+                fieldList = fieldDAO.searchFields(searchKeyword);
             } else {
-                userList = userDAO.getAllUsers();
+                fieldList = fieldDAO.getAllFields();
             }
 
-            request.setAttribute("userList", userList);
-            request.getRequestDispatcher("UserList.jsp").forward(request, response);
+            request.setAttribute("fieldList", fieldList);
+            request.getRequestDispatcher("Home.jsp").forward(request, response);
         } catch (Exception e) {
             throw new ServletException("Unable to retrieve user data from the database", e);
         }

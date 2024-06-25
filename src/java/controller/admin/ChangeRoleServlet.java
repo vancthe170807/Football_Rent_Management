@@ -1,4 +1,4 @@
-package controller;
+package controller.admin;
 
 import dal.UserDAO;
 import dal.AuthenticateDAO;
@@ -42,7 +42,7 @@ public class ChangeRoleServlet extends HttpServlet {
                 UserDAO userDAO = new UserDAO();
                 try {
                     userDAO.updateUserRole(phone, newRole);
-                    response.sendRedirect("userlistservlet");
+                    response.sendRedirect("userlist");
                 } catch (SQLException e) {
                     e.printStackTrace();
                     response.sendRedirect("UserList.jsp?error=Database+error");

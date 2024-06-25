@@ -40,7 +40,7 @@
 
     <div class="container mt-5">
         <h1 class="mb-4 text-center">User List</h1>
-        <form method="get" action="userlistservlet" class="mb-4">
+        <form method="get" action="userlist" class="mb-4">
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Search users...">
                 <button type="submit" class="btn btn-primary">

@@ -17,15 +17,15 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                         <h5>Thông tin liên hệ</h5>
-                        <p class="mb-0">Sân bóng ABC</p>
-                        <p class="mb-0">Địa chỉ: 123 Đường ABC, Thành phố XYZ</p>
+                        <p class="mb-0">Sân bóng Hoà Lạc</p>
+                        <p class="mb-0">Địa chỉ: Xã Thạch Hoà, huyện Thạch Thất, thành phố Hà Nội</p>
                         <p class="mb-0">Điện thoại: 0123 456 789</p>
                         <p>Email: info@sanbongabc.com</p>
                     </div>
                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                         <h5>Liên kết hữu ích</h5>
                         <ul class="list-unstyled mb-0">
-                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="home">Trang chủ</a></li>
                             <li><a href="#">Sân bóng</a></li>
                             <li><a href="#">Đặt sân</a></li>
                             <li><a href="#">Giới thiệu</a></li>
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="container-fluid bg-secondary text-center py-2">
-                <p class="mb-0">&copy; 2024 Sân bóng ABC. All rights reserved.</p>
+                <p class="mb-0">&copy; 2024 Sân bóng Hoà Lạc. All rights reserved.</p>
             </div>
         </footer>
     </body>
