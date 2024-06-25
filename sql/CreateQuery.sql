@@ -3,7 +3,7 @@
 -- Note: phải bôi đen từng mục 1 rồi mới excute query
 
 -- Lệnh Alter table (dùng để thay đổi cột dữ liệu củ bảng có sẵn: Create, Update dữ liệu, Delete)
-alter table FieldInfo alter column FieldCode varchar(7)
+alter table Orders ADD TotalAmount int
 
 -- Lệnh Xoá bảng
 drop table Orders
@@ -158,47 +158,76 @@ create database FootballRentManagement
 	CREATE TABLE Orders (
 		OrderID INT IDENTITY(1,1) PRIMARY KEY, -- Mã hoá đơn
 		CustomerPhone VARCHAR(15) NOT NULL references [User](phone), -- Số điện thoại khách hàng order
+		EmployeePhone varchar(15) references [User](phone),
 		FieldCode varchar(7) not null references FieldInfo(FieldCode), -- Mã sân đặt
 		BookingDate DATETIME NOT NULL, -- Ngày đặt
 		StartTime datetime not null, --Thời gian bắt đầu đặt sân
 		EndTime datetime not null, -- Thời gian kết thúc đặt sân
+		TotalAmount int,
 		[Status] VARCHAR(7) NOT NULL DEFAULT 'Pending' references [Status]([Status]) -- Trạng thái đặt đơn
 	);
 
+		-- 7.1. Thêm dữ liệu vào bảng Order
+		insert into Orders(CustomerPhone, FieldCode, BookingDate, StartTime, EndTime) values
+		('0385913898', 'SAN502', '2024-06-25 23:00:00', '2024-06-26 17:00:00', '2024-06-26 19:00:00')
+
 	-- 8. Tạo bảng thông tin đặt thuê dụng cụ
-	create table EquipmentBooking (
-		EquipmentRentID int primary key, -- Mã thuê dụng cụ
-		InvoiceID int references Orders(InvoiceID), -- Mã hoá đơn liên kết
-		StartTime datetime not null, -- Giờ bắt đầu thuê
-		EndTime datetime not null, -- Giờ kết thúc
-		TotalEquipmentCost int -- Phí thuê dụng cụ: TotalEquipmentCost = RentPrice * (EndTime - StartTime) * Qualtity
+	create table OrderDetailsEquipment (
+		OrderID int references Orders(OrderID), -- Mã đặt (references với bảng Orders)
+		EquipmentCode varchar(6) references EquipmentInfo(EquipmentCode), -- Mã dụng cụ (references Equipment)
+		EquipmentQuantity int, -- Số lượng dụng cụ
+		primary key(OrderID, EquipmentCode)
 	)
 
-	-- 10. Tạo bảng thông tin chi tiết cho thuê dụng cụ
-	CREATE TABLE EquipmentBookingDetails (
-		DetailEquipmentRentID INT IDENTITY(1,1) PRIMARY KEY, -- Mã dụng cụ cho thuê chi tiết
-		EquipmentRentID INT NOT NULL references EquipmentBookingRent(EquipmentRentID), -- Mã thuê dụng cụ
-		EquipmentCode VARCHAR(6) NOT NULL references EquipmentInfo(EquipmentCode), -- Mã dụng cụ
-		Quantity INT NOT NULL, -- Số lượng dụng cụ
-		CostPerUnit DECIMAL(10, 2) NOT NULL, -- Đơn giá
-		TotalCost AS (Quantity * CostPerUnit) PERSISTED -- Thành tiền
-	);
+		-- 8.1. Thêm dữ liệu vào bảng OrderDetailsEquipment
+		insert into OrderDetailsEquipment (OrderID, EquipmentCode, EquipmentQuantity) values
+		(1, 'PIT01R', 3), (1, 'PIT04R', 2), (1, 'GLO09A', 1), (1, 'BAL05A', 1)
 
-	-- 11. Tạo bảng thông tin mua sản phẩm (đồ ăn, thức uống)
-	create table BuyingProduct (
-		BuyingProductID int primary key, -- Mã đơn mua
-		InvoiceID int references Orders(InvoiceID), -- Mã hoá đơn liên kết
-		TotalBuyingProductCost int -- Phí thuê dụng cụ: TotalBuyingProductCost = BuyingPrice * Qualtity
+		-- 8.2. Xuất bảng chi tiết OrderDetailsEquipment
+		SELECT 
+			ord.OrderID, 
+			ord.CustomerPhone, 
+			ord.EmployeePhone, 
+			ord.BookingDate, 
+			ord.FieldCode, 
+			ord.StartTime,
+			ord.EndTime, 
+			eqm.EquipmentName,
+			ore.EquipmentQuantity
+		FROM 
+			Orders ord
+		JOIN 
+			OrderDetailsEquipment ore ON ore.OrderID = ord.OrderID
+		JOIN
+			EquipmentInfo eqm ON eqm.EquipmentCode = ore.EquipmentCode;
+
+	-- 9. Tạo bảng OrderDetailsProduct
+	create table OrderDetailsProduct (
+		OrderID int references Orders(OrderID), -- Mã đặt (references với bảng Orders)
+		ProductCode varchar(10) references Product(ProductCode), -- Mã đò ăn thức uống (references Product)
+		ProductQuantity int -- Số lượng mỗi sản phẩm
+		primary key(OrderID, ProductCode)
 	)
 	
-	-- 12. Tạo bảng thông tin chi tiết cho thuê dụng cụ
-	CREATE TABLE BuyingProductDetails (
-		DetailBuyingProductID INT IDENTITY(1,1) PRIMARY KEY, -- Mã sản phẩm mua
-		BuyingProductID INT NOT NULL references BuyingProduct(BuyingProductID), -- Mã thuê dụng cụ
-		ProductCode VARCHAR(10) NOT NULL references Product(ProductCode), -- Mã dụng cụ
-		Quantity INT NOT NULL, -- Số lượng dụng cụ
-		CostPerUnit DECIMAL(10, 2) NOT NULL, -- Đơn giá
-		TotalCost AS (Quantity * CostPerUnit) PERSISTED -- Thành tiền
-	);
+		-- 9.1. Thêm dữ liệu vào bảng OrderDetailsProduct
+		insert into OrderDetailsProduct (OrderID, ProductCode, ProductQuantity) values 
+		(1, 'DRINK00002', 3), (1, 'DRINK00006', 2), (1, 'SNACK00003', 4), (1, 'SNACK00005', 3),
+		(2, 'DRINK00002', 5), (2, 'DRINK00001', 1), (2, 'SNACK00001', 3), (2, 'SNACK00004', 7)
 
-
+		-- 9.2. Thông tin chi tiết đơn
+		SELECT 
+			ord.OrderID, 
+			ord.CustomerPhone, 
+			ord.EmployeePhone, 
+			ord.BookingDate, 
+			ord.FieldCode, 
+			ord.StartTime,
+			ord.EndTime, 
+			pro.ProductName,
+			orp.ProductQuantity
+		FROM 
+			Orders ord
+		JOIN 
+			OrderDetailsProduct orp ON orp.OrderID = ord.OrderID
+		JOIN
+			Product pro ON pro.ProductCode = orp.ProductCode;
