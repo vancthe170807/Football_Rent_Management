@@ -1,4 +1,4 @@
-package controller;
+package controller.admin;
 
 import dal.UserDAO;
 import dal.AuthenticateDAO;
@@ -41,7 +41,7 @@ public class DeleteUserServlet extends HttpServlet {
                 UserDAO userDAO = new UserDAO();
                 try {
                     userDAO.deleteUser(phone);
-                    response.sendRedirect("userlistservlet");
+                    response.sendRedirect("userlist");
                 } catch (SQLException e) {
                     e.printStackTrace();
                     response.sendRedirect("UserList.jsp?error=Database+error");

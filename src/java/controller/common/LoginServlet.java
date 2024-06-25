@@ -1,4 +1,4 @@
-package controller;
+package controller.common;
 
 import dal.UserDAO;
 import model.Account;
@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 session.setAttribute("user", user);
                 session.setAttribute("message", "Login successful!");
-                response.sendRedirect("Home.jsp"); // Redirect to the home page or dashboard
+                response.sendRedirect("home"); // Redirect to the home page or dashboard
             } else {
                 session.setAttribute("error", "Invalid phone or password");
                 response.sendRedirect("Login.jsp");
