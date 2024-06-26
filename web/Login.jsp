@@ -54,6 +54,7 @@
             </div>
         </form>
         <p class="text-center mt-3">If you don't have an account, you can <a href="Register.jsp">Register</a></p>
+        <p class="text-center mt-3">Come back to <a href="home">Home</a></p>
             </div>
         </div>
         

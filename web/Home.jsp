@@ -8,11 +8,6 @@
     Account user = (Account) session.getAttribute("user");
     List<Field> fieldList = (List<Field>) request.getAttribute("fieldList");
 
-    if (user == null) {
-        response.sendRedirect("Login.jsp");
-        return;
-    }
-
     // Khởi tạo NumberFormat cho locale Việt Nam
     NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
 %>
@@ -133,8 +128,8 @@
                     <a href="fieldinfo?FieldCode=<%=f.getFieldCode()%>" style="text-decoration: none"><h4><%= f.getFieldName() %></h4></a>
                     <p>Loại sân: <strong><%= f.getFieldType() %></strong> người / đội</p>
                     <p>Giá thuê: <strong style="color: red"><%= numberFormat.format(f.getRentPrice()) %></strong> VNĐ/giờ</p>
-                    <button class="btn btn-success btn-block" data-bs-toggle="modal" data-bs-target="#bookingModal" data-fieldcode="<%= f.getFieldCode() %>" data-fieldname="<%= f.getFieldName() %>">Đặt sân</button>
-                    <% if ("ADM".equals(user.getRolecode())) { %>
+                    <button class="btn btn-success btn-block booking-button" data-fieldcode="<%= f.getFieldCode() %>" data-fieldname="<%= f.getFieldName() %>">Đặt sân</button>
+                    <% if (user != null && "ADM".equals(user.getRolecode())) { %>
                         <div class="btn-group btn-block">
                             <a href="#" class="btn btn-primary">Cập nhật</a>
                             <a href="#" class="btn btn-danger">Xoá sân</a>
@@ -197,19 +192,31 @@
 
     <!-- JavaScript -->
     <script>
-        var bookingModal = document.getElementById('bookingModal');
-        bookingModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var fieldCode = button.getAttribute('data-fieldcode');
-            var fieldName = button.getAttribute('data-fieldname');
-            
-            var modalTitle = bookingModal.querySelector('.modal-title');
-            var modalFieldCode = bookingModal.querySelector('#fieldCode');
-            var modalFieldName = bookingModal.querySelector('#fieldName');
-            
-            modalTitle.textContent = 'Đặt sân: ' + fieldName;
-            modalFieldCode.value = fieldCode;
-            modalFieldName.value = fieldName;
+        var isLoggedIn = <%= (user != null) %>; // Kiểm tra người dùng đã đăng nhập hay chưa
+
+        // Thêm sự kiện click cho tất cả các nút đặt sân
+        document.querySelectorAll('.booking-button').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                if (!isLoggedIn) {
+                    // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+                    window.location.href = 'Login.jsp';
+                } else {
+                    var fieldCode = button.getAttribute('data-fieldcode');
+                    var fieldName = button.getAttribute('data-fieldname');
+                    
+                    var modalTitle = document.querySelector('#bookingModal .modal-title');
+                    var modalFieldCode = document.querySelector('#fieldCode');
+                    var modalFieldName = document.querySelector('#fieldName');
+                    
+                    modalTitle.textContent = 'Đặt sân: ' + fieldName;
+                    modalFieldCode.value = fieldCode;
+                    modalFieldName.value = fieldName;
+                    
+                    // Hiển thị modal
+                    var bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+                    bookingModal.show();
+                }
+            });
         });
 
         document.getElementById('orderButton').addEventListener('click', function () {

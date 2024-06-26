@@ -1,11 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.Account" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
-<%
-    if (session != null) {
-        user = (Account) session.getAttribute("user");
-    }
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +65,7 @@
                     <div class="d-flex ms-3">
                         <% if (user == null) { %>
                             <a href="Login.jsp" class="btn btn-outline-primary me-2">Login</a>
-                            <a href="SignUp.jsp" class="btn btn-primary">Sign-up</a>
+                            <a href="Register.jsp" class="btn btn-primary">Register</a>
                         <% } else { %>
                             <div class="dropdown">
                                 <% if (user != null && "ADM".equals(user.getRolecode())) { %>
@@ -150,7 +146,7 @@
                 <div class="d-flex mt-3">
                     <% if (user == null) { %>
                         <a href="Login.jsp" class="btn btn-outline-primary me-2">Login</a>
-                        <a href="SignUp.jsp" class="btn btn-primary">Sign-up</a>
+                        <a href="Register.jsp" class="btn btn-primary">Register</a>
                     <% } else { %>
                         <div class="dropdown">
                             <% if (user != null && "ADM".equals(user.getRolecode())) { %>
