@@ -152,7 +152,7 @@ create database FootballRentManagement
 	)
 
 		-- 6.1. Nhập dữ liệu thông tin trạng thái đặt thuê sân, dụng cụ
-		insert into [Status] ([Status]) values ('Pending'), ('Cancel'), ('Success')
+		insert into [Status] ([Status]) values ('Using'), ('Pending'), ('Cancel'), ('Success')
 
 	-- 7. Tạo bảng thông tin Order (trong đó Sân là FK và bắt buộc phải có)
 	CREATE TABLE Orders (
