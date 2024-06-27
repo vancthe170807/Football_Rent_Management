@@ -104,18 +104,18 @@
     <div class="search-form-container">
         <form id="searchForm" class="search-form">
             <div class="form-group">
-                <label for="startTime">Start Time</label>
-                <input type="time" id="startTime" placeholder="Start time" class="form-control">
+                <label for="startTime">Thời gian bắt đầu</label>
+                <input type="time" id="startTime" class="form-control">
             </div>
             <div class="form-group">
-                <label for="endTime">End Time</label>
-                <input type="time" id="endTime" placeholder="End time" class="form-control">
+                <label for="endTime">Thời gian kết thúc</label>
+                <input type="time" id="endTime" class="form-control">
             </div>
             <div class="form-group">
-                <label for="searchDate">Date</label>
-                <input type="date" id="searchDate" placeholder="Date" class="form-control">
+                <label for="searchDate">Ngày</label>
+                <input type="date" id="searchDate" class="form-control">
             </div>
-            <button type="button" id="searchButton" class="btn btn-primary btn-block">Search</button>
+            <button type="button" id="searchButton" class="btn btn-primary btn-block">Tìm kiếm</button>
         </form>
     </div>
 
@@ -128,7 +128,9 @@
                     <a href="fieldinfo?FieldCode=<%=f.getFieldCode()%>" style="text-decoration: none"><h4><%= f.getFieldName() %></h4></a>
                     <p>Loại sân: <strong><%= f.getFieldType() %></strong> người / đội</p>
                     <p>Giá thuê: <strong style="color: red"><%= numberFormat.format(f.getRentPrice()) %></strong> VNĐ/giờ</p>
-                    <button class="btn btn-success btn-block booking-button" data-fieldcode="<%= f.getFieldCode() %>" data-fieldname="<%= f.getFieldName() %>">Đặt sân</button>
+                    <button class="btn btn-success btn-block booking-button"
+                            data-fieldcode="<%= f.getFieldCode() %>"
+                            data-fieldname="<%= f.getFieldName() %>">Đặt sân</button>
                     <% if (user != null && "ADM".equals(user.getRolecode())) { %>
                         <div class="btn-group btn-block">
                             <a href="#" class="btn btn-primary">Cập nhật</a>
@@ -172,12 +174,12 @@
                             <label for="endTime" class="form-label">Giờ kết thúc</label>
                             <input type="time" class="form-control" id="endTime" required>
                         </div>
-                        <div class="alert alert-danger d-none" id="bookingAlert">Hiện sân này đã có người đặt trong cùng giờ, vui lòng chọn sân hoặc giờ khác</div>
+                        <div class="alert alert-danger d-none" id="bookingAlert">Sân đã có người đặt vào thời gian này, vui lòng chọn sân hoặc thời gian khác.</div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="orderButton">Order</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="orderButton">Đặt sân</button>
                 </div>
             </div>
         </div>
@@ -229,23 +231,23 @@
 
             // AJAX request to check for overlapping bookings
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'BookingServlet', true);
+            xhr.open('GET', 'order?action=createBooking', true); // Updated URL to call OrderServlet
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.overlap) {
-                        bookingAlert.classList.remove('d-none');
-                    } else {
-                        bookingAlert.classList.add('d-none');
-                        // Proceed with booking creation
-                        var bookingForm = document.getElementById('bookingForm');
-                        bookingForm.submit();
-                    }
+                    // Redirect to Orders.jsp upon successful booking
+                    window.location.href = 'Orders.jsp';
+                } else if (xhr.status === 409) {
+                    // Handle conflict error
+                    bookingAlert.classList.remove('d-none');
+                } else {
+                    // Handle other errors
+                    console.error('Error creating order:', xhr.statusText);
                 }
             };
-            xhr.send('action=checkOverlap&fieldCode=' + fieldCode + '&bookingDate=' + bookingDate + '&startTime=' + startTime + '&endTime=' + endTime);
+            xhr.send('fieldCode=' + fieldCode + '&bookingDate=' + bookingDate + '&startTime=' + startTime + '&endTime=' + endTime);
         });
+
     </script>
 </body>
 </html>
